@@ -1,5 +1,7 @@
 ## Beat Bobby Flay
 
+Code does teh following
+
 1. pulls down data from wikipedia page
 2. formats data into excel
 3. pulls info from data set
