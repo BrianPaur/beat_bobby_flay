@@ -9,15 +9,15 @@ import os
 #######################################################################
 #### Formats the workbooks ############################################
 #######################################################################
+def format():
+    all_df = pd.read_excel("Beat_Bobby_Flay_season_data.xlsx",sheet_name=None)
+    df = pd.concat(all_df, ignore_index=True)
+    df = df.rename(columns=df.iloc[0]).drop(df.index[0]) #drops headers that were taking up space
+    df = df[df['Title']!='Title']
 
-all_df = pd.read_excel("C:/Users/Brian/Desktop/beat_bobby_flay/Beat_Bobby_Flay_season_data.xlsx",sheet_name=None)
-df = pd.concat(all_df, ignore_index=True)
-df = df.rename(columns=df.iloc[0]).drop(df.index[0]) #drops headers that were taking up space
-df = df[df['Title']!='Title']
-
-#creates wb for all data to be combine on
-writer = pd.ExcelWriter("C:/Users/Brian/Desktop/beat_bobby_flay/Beat_Bobby_Flay.xlsx", engine = 'openpyxl')
-df.to_excel(writer,"All Data")
-writer.save()
-writer.close()
+    #creates wb for all data to be combine on
+    writer = pd.ExcelWriter("Beat_Bobby_Flay.xlsx", engine = 'openpyxl')
+    df.to_excel(writer,"All Data")
+    writer.save()
+    writer.close()
 

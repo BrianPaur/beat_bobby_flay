@@ -14,7 +14,6 @@ def data_pull():
 
     #creates workbook
     w = Workbook()
-    os.chdir("C:/Users/Brian/Desktop/beat_bobby_flay/")  #will need to add in dynamic path
     w.save("Beat_Bobby_Flay.xlsx")
     w.close()
 
@@ -42,14 +41,14 @@ def data_pull():
 
     #formats the sheets to remove unnecessary headers
     for i in range(0,number_of_seasons):
-        wb = load_workbook("C:/Users/Brian/Desktop/beat_bobby_flay/Beat_Bobby_Flay_season_data.xlsx")
+        wb = load_workbook("Beat_Bobby_Flay_season_data.xlsx")
         ws = wb[f'season {i+1}']
         ws.delete_rows(3,1)
-        wb.save("C:/Users/Brian/Desktop/beat_bobby_flay/Beat_Bobby_Flay_season_data.xlsx")
+        wb.save("Beat_Bobby_Flay_season_data.xlsx")
 
     wb.close()
 
-data_pull()
+
 
 
 

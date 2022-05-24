@@ -6,7 +6,78 @@ from openpyxl import Workbook, load_workbook
 import openpyxl
 import os
 import gender_guesser.detector as gender
-import matplotlib.pyplot as plt
+
+#######################################################################
+#### Main data pull ###################################################
+#######################################################################
+
+class Datapull:
+
+    def __init__(self, wbname, wbseason):
+        self.wbname = wbname
+        self.wbseason = wbseason
+
+    def data_pull(self):
+
+        # creates workbook
+        w = Workbook()
+        w.save(self.wbname)
+        w.close()
+
+        # url for data
+        wikiurl = "https://en.wikipedia.org/wiki/Beat_Bobby_Flay"
+        response = requests.get(wikiurl)
+        soup = BeautifulSoup(response.text, 'html.parser')
+
+        # get the number of seasons from wiki table
+        number_of_seasons = int(
+            etree.fromstring(response.text).xpath('/html/body/div[3]/div[3]/div[5]/div[1]/table[1]/tbody/tr[8]/td')[
+                0].text)
+
+        # finds the different season tables on the wiki page
+        my_tables = soup.find_all("table", {"class": "wikitable"})
+        df = pd.read_html(str(my_tables))
+
+        # creates season data workbook
+        writer = pd.ExcelWriter(self.wbseason, engine='openpyxl')
+
+        # names sheets
+        for i in range(0, number_of_seasons):
+            pd.DataFrame(df[i]).to_excel(writer, f"season {i + 1}")
+            writer.save()
+
+        writer.close()
+
+        # formats the sheets to remove unnecessary headers
+        for i in range(0, number_of_seasons):
+            wb = load_workbook(self.wbseason)
+            ws = wb[f'season {i + 1}']
+            ws.delete_rows(3, 1)
+            wb.save(self.wbseason)
+
+        wb.close()
+
+#######################################################################
+#### Formats the workbooks ############################################
+#######################################################################
+
+class Format:
+
+    def __init__(self, wbname, wbseason):
+        self.wbname = wbname
+        self.wbseason = wbseason
+
+    def format(self):
+        all_df = pd.read_excel(self.wbseason, sheet_name=None)
+        df = pd.concat(all_df, ignore_index=True)
+        df = df.rename(columns=df.iloc[0]).drop(df.index[0])  # drops headers that were taking up space
+        df = df[df['Title'] != 'Title']
+
+        # creates wb for all data to be combine on
+        writer = pd.ExcelWriter(self.wbname, engine='openpyxl')
+        df.to_excel(writer, "All Data")
+        writer.save()
+        writer.close()
 
 #######################################################################
 #### Analysis functions ###############################################
@@ -83,10 +154,6 @@ class Analysis:
         # sets up new dataframe
         df2 = pd.DataFrame(rows, columns=["Season", "Win Rate", "Number of Episodes"])
 
-        df3 = pd.DataFrame(rows, columns=["Season", "Win Rate", "Number of Episodes"])
-        plt.figure()
-        df3.plot()
-
         print(df2.to_string(index=False))
 
     # shows winners dish
@@ -149,13 +216,6 @@ class Analysis:
         df = df['Original airdate'].str[-8:-6].value_counts()
         print(df)
 
-
-# example of how to run
-
-if __name__ == "__main__":
-    df = pd.read_excel("C:/Users/Brian/Desktop/beat_bobby_flay/Beat_Bobby_Flay.xlsx")
-    a = Analysis(df,"C:/Users/Brian/Desktop/beat_bobby_flay/Beat_Bobby_Flay_season_data.xlsx")
-    a.bobby_win_rate_by_season()
 
 
 
