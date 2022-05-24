@@ -25,11 +25,13 @@ class Analysis:
     def total_challanges(self):
         print(len(self.df.index))
 
+    # calculates win breakdown
     def win_breakdown(self):
         data = self.df['Winner'].value_counts()
 
         print(f'total challeges bobby has won: {data.head(1)[0]} out of {len(data)+data.head(1)[0]}')
 
+    # calculates win breakdown by season
     def win_breakdown_by_season(self, season=None):
         #defaults to the latest season if none provided
         if season == None:
@@ -82,11 +84,13 @@ class Analysis:
 
         print(df2.to_string(index=False))
 
+    # shows winners dish
     def winners_dish(self):
         winners_dish = df[self.df['Winner'] != 'Bobby Flay']
         winners_dish = winners_dish[['Dish','Winner']]
         print(winners_dish)
 
+    # shows winners dish by season
     def winners_dish_by_season(self, season=None):
         if season == None:
             # url for data for number of seasons
@@ -111,18 +115,21 @@ class Analysis:
             winners_dish = winners_dish[['Dish','Winner']]
             print(winners_dish)
 
+    # shows date of losses
     def loss_date(self):
         df = self.df
         df = df[self.df['Winner'] != 'Bobby Flay']
         df = df['Original airdate']
         print(df)
 
+    # tallies up the losses by year
     def loss_year(self):
         df = self.df
         df = df[self.df['Winner'] != 'Bobby Flay']
         df = df['Original airdate'].str[-4:].value_counts().sort_index(ascending=False)
         print(df)
 
+    # tallies up the losses by month
     def loss_month(self):
         cat = ['Jan', 'Feb', 'Mar', 'Apr','May','Jun', 'Jul', 'Aug','Sep', 'Oct', 'Nov', 'Dec']
         df = self.df
@@ -130,6 +137,7 @@ class Analysis:
         df = df['Original airdate'].str[:3].value_counts().reindex(cat)
         print(df)
 
+    # tallies up the losses by day of month
     def time_of_month(self):
         df = self.df
         df = df[self.df['Winner'] != 'Bobby Flay']
@@ -137,9 +145,13 @@ class Analysis:
         print(df)
 
 
+# example of how to run
+
 if __name__ == "__main__":
     df = pd.read_excel("C:/Users/Brian/Desktop/beat_bobby_flay/Beat_Bobby_Flay.xlsx")
     a = Analysis(df,"C:/Users/Brian/Desktop/beat_bobby_flay/Beat_Bobby_Flay_season_data.xlsx")
+    a.bobby_win_rate()
+
 
 
 
