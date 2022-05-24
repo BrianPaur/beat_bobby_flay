@@ -6,11 +6,15 @@ from openpyxl import Workbook, load_workbook
 import openpyxl
 import os
 
+#######################################################################
+#### Main data pull ###################################################
+#######################################################################
+
 def data_pull():
 
     #creates workbook
     w = Workbook()
-    os.chdir("C:/Users/Brian/Desktop/beat_bobby_flay/")
+    os.chdir("C:/Users/Brian/Desktop/beat_bobby_flay/")  #will need to add in dynamic path
     w.save("Beat_Bobby_Flay.xlsx")
     w.close()
 
@@ -19,7 +23,7 @@ def data_pull():
     response=requests.get(wikiurl)
     soup = BeautifulSoup(response.text, 'html.parser')
 
-    # get the number of seasons from wiki
+    # get the number of seasons from wiki table
     number_of_seasons = int(etree.fromstring(response.text).xpath('/html/body/div[3]/div[3]/div[5]/div[1]/table[1]/tbody/tr[8]/td')[0].text)
 
     #finds the different season tables on the wiki page
@@ -44,8 +48,6 @@ def data_pull():
         wb.save("C:/Users/Brian/Desktop/beat_bobby_flay/Beat_Bobby_Flay_season_data.xlsx")
 
     wb.close()
-
-
 
 data_pull()
 
