@@ -1,6 +1,6 @@
 ## Beat Bobby Flay
 
-Code does teh following
+Code does the following
 
 1. pulls down data from wikipedia page
 2. formats data into excel
