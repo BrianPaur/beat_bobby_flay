@@ -6,6 +6,7 @@ from openpyxl import Workbook, load_workbook
 import openpyxl
 import os
 import gender_guesser.detector as gender
+import matplotlib.pyplot as plt
 
 #######################################################################
 #### Analysis functions ###############################################
@@ -82,6 +83,10 @@ class Analysis:
         # sets up new dataframe
         df2 = pd.DataFrame(rows, columns=["Season", "Win Rate", "Number of Episodes"])
 
+        df3 = pd.DataFrame(rows, columns=["Season", "Win Rate", "Number of Episodes"])
+        plt.figure()
+        df3.plot()
+
         print(df2.to_string(index=False))
 
     # shows winners dish
@@ -150,7 +155,7 @@ class Analysis:
 if __name__ == "__main__":
     df = pd.read_excel("C:/Users/Brian/Desktop/beat_bobby_flay/Beat_Bobby_Flay.xlsx")
     a = Analysis(df,"C:/Users/Brian/Desktop/beat_bobby_flay/Beat_Bobby_Flay_season_data.xlsx")
-    a.bobby_win_rate()
+    a.bobby_win_rate_by_season()
 
 
 
