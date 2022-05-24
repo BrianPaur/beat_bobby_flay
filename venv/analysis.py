@@ -7,79 +7,63 @@ import openpyxl
 import os
 import gender_guesser.detector as gender
 
+#######################################################################
+#### Analysis functions ###############################################
+#######################################################################
+
 class Analysis:
 
     def __init__(self, df, df_by_season):
         self.df = df
         self.df_by_season = df_by_season
 
+    # returns whole dataframe
     def data_frame(self):
         print(self.df)
 
+    # calculates total amount of challeges
     def total_challanges(self):
         print(len(self.df.index))
 
     def win_breakdown(self):
         data = self.df['Winner'].value_counts()
-        file = 'C:/Users/Brian/Desktop/beat_bobby_flay/Beat_Bobby_Flay_analysis.xlsx'
-        sheet ='Win Breakdown'
-        book = pd.ExcelWriter(file)
 
-        if sheet not in book.sheetnames:
-            book.create_sheet(sheet)
-        else:
-            pass
-
-        data.to_excel(file, sheet_name=sheet)
-
-        print(f'total challeges {len(data.index)}')
-        print(data.head(10))
+        print(f'total challeges bobby has won: {data.head(1)[0]} out of {len(data)+data.head(1)[0]}')
 
     def win_breakdown_by_season(self, season=None):
-        df = pd.read_excel(self.df_by_season, sheet_name=f'season {season}')
-        df = df.rename(columns=df.iloc[0]).drop(df.index[0])
-        data = df['Winner'].value_counts()
-        file = 'C:/Users/Brian/Desktop/beat_bobby_flay/Beat_Bobby_Flay_analysis.xlsx'
-        sheet = f'season {season}'
-        book = openpyxl.load_workbook(file)
-
-        #checks to see if sheet exist and creates if if it doesn't
-        if sheet not in book.sheetnames:
-            book.create_sheet(sheet)
-        else:
-            pass
-
         #defaults to the latest season if none provided
         if season == None:
             # url for data
             wikiurl = "https://en.wikipedia.org/wiki/Beat_Bobby_Flay"
             response = requests.get(wikiurl)
             soup = BeautifulSoup(response.text, 'html.parser')
-            season = number_of_seasons = int(etree.fromstring(response.text).xpath('/html/body/div[3]/div[3]/div[5]/div[1]/table[1]/tbody/tr[8]/td')[0].text)
+            season = int(etree.fromstring(response.text).xpath('/html/body/div[3]/div[3]/div[5]/div[1]/table[1]/tbody/tr[8]/td')[0].text)
 
-            data.to_excel(file, sheet_name=sheet)
             df = pd.read_excel(self.df_by_season,sheet_name=f'season {season}')
             df = df.rename(columns=df.iloc[0]).drop(df.index[0])
+
             print(f'total challeges {len(df.index)}')
-            print(df['Winner'].value_counts().head(10))
+            print(df['Winner'].value_counts())
 
         else:
-            data.to_excel(file, sheet_name=sheet)
             df = pd.read_excel(self.df_by_season,sheet_name=f'season {season}')
             df = df.rename(columns=df.iloc[0]).drop(df.index[0])
-            print(f'total challeges {len(df.index)}')
-            print(df['Winner'].value_counts().head(10))
 
+            print(f'total challeges {len(df.index)}')
+            print(df['Winner'].value_counts())
+
+    # calculates bobby's w/l percentage
     def bobby_win_rate(self):
         wins = self.df['Winner'].value_counts().head(1)
         print(f'Bobby has a {round(wins[0]/len(self.df.index)*100,2)}% win rate')
 
+    # calculates bobby's w/l percentage by season
     def bobby_win_rate_by_season(self):
         # url for data for number of seasons
         wikiurl = "https://en.wikipedia.org/wiki/Beat_Bobby_Flay"
         response = requests.get(wikiurl)
         soup = BeautifulSoup(response.text, 'html.parser')
-        season = number_of_seasons = int(etree.fromstring(response.text).xpath('/html/body/div[3]/div[3]/div[5]/div[1]/table[1]/tbody/tr[8]/td')[0].text)
+        season = int(etree.fromstring(response.text).xpath('/html/body/div[3]/div[3]/div[5]/div[1]/table[1]/tbody/tr[8]/td')[0].text)
 
         rows = []
 
@@ -109,7 +93,7 @@ class Analysis:
             wikiurl = "https://en.wikipedia.org/wiki/Beat_Bobby_Flay"
             response = requests.get(wikiurl)
             soup = BeautifulSoup(response.text, 'html.parser')
-            season = number_of_seasons = int(etree.fromstring(response.text).xpath('/html/body/div[3]/div[3]/div[5]/div[1]/table[1]/tbody/tr[8]/td')[0].text)
+            season = int(etree.fromstring(response.text).xpath('/html/body/div[3]/div[3]/div[5]/div[1]/table[1]/tbody/tr[8]/td')[0].text)
 
             df = pd.read_excel(self.df_by_season, sheet_name=f'season {season}')
             df = df.rename(columns=df.iloc[0]).drop(df.index[0])
@@ -157,8 +141,6 @@ if __name__ == "__main__":
     df = pd.read_excel("C:/Users/Brian/Desktop/beat_bobby_flay/Beat_Bobby_Flay.xlsx")
     a = Analysis(df,"C:/Users/Brian/Desktop/beat_bobby_flay/Beat_Bobby_Flay_season_data.xlsx")
 
-
-    a.win_breakdown_by_season(2)
 
 
 
