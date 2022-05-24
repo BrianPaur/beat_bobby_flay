@@ -4,7 +4,7 @@ Code does the following
 
 1. pulls down data from wikipedia page
 2. formats data into excel
-3. pulls info from data set
+3. pulls stats from data set
 
 Things to work on
 
