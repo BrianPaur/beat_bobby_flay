@@ -5,6 +5,7 @@ from lxml import etree
 from openpyxl import Workbook, load_workbook
 import openpyxl
 import os
+from os.path import exists
 import gender_guesser.detector as gender
 
 #######################################################################
@@ -13,7 +14,7 @@ import gender_guesser.detector as gender
 
 class Datapull:
 
-    def __init__(self, wbname, wbseason):
+    def __init__(self, wbname="Beat_Bobby_Flay.xlsx", wbseason="Beat_Bobby_Flay_season_data.xlsx"):
         self.wbname = wbname
         self.wbseason = wbseason
 
@@ -57,13 +58,15 @@ class Datapull:
 
         wb.close()
 
+
+
 #######################################################################
 #### Formats the workbooks ############################################
 #######################################################################
 
 class Format:
 
-    def __init__(self, wbname, wbseason):
+    def __init__(self, wbname="Beat_Bobby_Flay.xlsx", wbseason="Beat_Bobby_Flay_season_data.xlsx"):
         self.wbname = wbname
         self.wbseason = wbseason
 
@@ -85,7 +88,7 @@ class Format:
 
 class Analysis:
 
-    def __init__(self, df, df_by_season):
+    def __init__(self, df=pd.read_excel("Beat_Bobby_Flay.xlsx"), df_by_season="Beat_Bobby_Flay_season_data.xlsx"):
         self.df = df
         self.df_by_season = df_by_season
 
