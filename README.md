@@ -13,6 +13,6 @@ Example output:
 Things to work on:
 
 1. move away from excel and use pandas or db solely 
-2. get rid of fixed paths
+
 
 
