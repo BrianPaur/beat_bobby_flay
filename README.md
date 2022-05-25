@@ -7,10 +7,7 @@ Code does the following:
 3. pulls stats from data set
 
 Example output:
-
-![image](https://user-images.githubusercontent.com/48654156/169933095-aa1d6790-ac88-406d-9b3e-a7564c6540b3.png)
-
-![image](https://user-images.githubusercontent.com/48654156/169933119-01d43b7a-c767-4b1f-af06-b6a33e948e02.png)
+![image](https://user-images.githubusercontent.com/48654156/170151849-990e4155-0168-4f7c-91c7-9713dd9bf2ed.png)
 
 Things to work on:
 
