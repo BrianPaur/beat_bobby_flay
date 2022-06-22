@@ -22,7 +22,7 @@ Example output:
 
 
 To Do:
-add to GUI or Flask app
+- add to GUI or Flask app
 
 
 
